@@ -10,4 +10,4 @@ export GOOS=linux
 export GOARCH=amd64
 go build -trimpath -ldflags "-s -w" -o bin/azure-openai-proxy ./cmd
 
-docker build -t stulzq/azure-openai-proxy:$VERSION .
+docker build -t ken-mok/azure-openai-proxy:$VERSION .
