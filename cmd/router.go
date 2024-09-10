@@ -19,11 +19,14 @@ func registerRoute(r *gin.Engine) {
 	stripPrefixConverter := azure.NewStripPrefixConverter(apiBase)
 	r.GET(stripPrefixConverter.Prefix+"/models", azure.ModelProxy)
 	templateConverter := azure.NewTemplateConverter("/openai/deployments/{{.DeploymentName}}/embeddings")
+    	// Create a template converter for image generation routes
+    	imageGenerationTemplateConverter := azure.NewTemplateConverter("/openai/deployments/{{.DeploymentName}}/images/generations")
 	apiBasedRouter := r.Group(apiBase)
 	{
 		apiBasedRouter.Any("/engines/:model/embeddings", azure.ProxyWithConverter(templateConverter))
 		apiBasedRouter.Any("/completions", azure.ProxyWithConverter(stripPrefixConverter))
 		apiBasedRouter.Any("/chat/completions", azure.ProxyWithConverter(stripPrefixConverter))
 		apiBasedRouter.Any("/embeddings", azure.ProxyWithConverter(stripPrefixConverter))
+		apiBasedRouter.Any("/images/generations", azure.ProxyWithConverter(imageGenerationTemplateConverter))
 	}
 }
